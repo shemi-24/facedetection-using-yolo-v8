@@ -1,15 +1,18 @@
+# last cheythath like shameer bro debug
 import cv2
 from ultralytics import YOLO
-import os
 
 # Set the absolute path to your YOLO model file
-model_path = 'C:\\incident_detection\\detect\\runs\\detect\\train11\\weights\\best.pt'  # Change this path based on your folder structure
+model = YOLO('C:\\incident_detection\\detect\\runs\\detect\\yolov8n_custom\\weights\\last.pt')  # Change this path based on your folder structure
 
 # Load the YOLO model
-model = YOLO(model_path)  # Load the YOLO model
+# model = YOLO('yolov8n.pt')  # Load the YOLO model
+
+# Define authorized persons (class names from your dataset)
+authorized_persons = ['Person1', 'Person2']
 
 # Detection threshold
-threshold = 0.5  # Confidence threshold for detections
+threshold = 0.0  # Confidence threshold for detections
 
 # Open the webcam (0 for default webcam)
 cap = cv2.VideoCapture(0)
@@ -25,23 +28,49 @@ while cap.isOpened():
         print("Error: Could not read frame from webcam.")
         break
 
+    
+    print("EDA MONE FRAME?????")
+    print(frame)
     # Perform detection on the frame
     results = model(frame)  # Run YOLO detection
+
+    # print(results)
+
+    print("RESULTS VANNU>>>>>>>>")
+    print(len(results))
 
     # Process the results (bounding boxes and class names)
     for result in results:
         boxes = result.boxes
+        print("MONEEE BOXES???/")
+        print(boxes)
         for box in boxes:
             class_id = int(box.cls)
             confidence = float(box.conf)
             x1, y1, x2, y2 = map(int, box.xyxy[0])
 
             if confidence >= threshold:  # Only consider detections above the threshold
-                # Draw bounding box and label
-                label = f"Class {class_id} {confidence:.2f}"  # Replace class_id with actual class names if needed
-                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)  # Green color for bounding box
-                cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+                # Get the class name from the model
+                class_name = model.names[class_id]
 
+
+                print("EDA HASHIRE>>>>>>>>")
+
+                # Check if the detected person is authorized
+                if class_name in authorized_persons:
+                    label = f"{class_name} {confidence:.2f}"
+                    color = (0, 255, 0)  # Green color for authorized persons
+                else:
+                    label = f"Unknown {confidence:.2f}"
+                    color = (0, 0, 255)  # Red color for unauthorized persons
+
+                # Draw bounding box and label
+                cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
+                cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
+
+            else:
+                print("Nothing found")
+        print("ORU KOPPUM ILLA???????")
     # Display the current frame with detections
     cv2.imshow('Live Webcam Detection', frame)
 

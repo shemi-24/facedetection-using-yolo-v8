@@ -2,5 +2,13 @@ path: C:\incident_detection\detect\dataset
 train: images/train  # Training images path
 val: images/val      # Validation images path
 
-nc: 2
-names: ["person1","person2"]
+names:
+   0: person1
+   1: person2
+
+# train: C:\incident_detection\detect\datasets\train\images  
+# val: C:\incident_detection\detect\datasets\val\images  
+# test: C:\incident_detection\detect\datasets\test\images  
+
+# nc: 3  # Replace with the actual number of classes  
+# names: ['person1','person2']  # Replace with your actual class names  
