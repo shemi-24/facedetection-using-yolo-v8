@@ -1,0 +1,6 @@
+path: C:\incident_detection\detect\dataset
+train: images/train  # Training images path
+val: images/val      # Validation images path
+
+nc: 2
+names: ["person1","person2"]
