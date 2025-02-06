@@ -3,16 +3,19 @@ import cv2
 from ultralytics import YOLO
 
 # Set the absolute path to your YOLO model file
-model = YOLO('C:\\incident_detection\\detect\\runs\\detect\\yolov8n_custom\\weights\\last.pt')  # Change this path based on your folder structure
+model = YOLO('C:\\incident_detection\\detect\\runs\\detect\\yolov8n_custom_data\\weights\\last.pt')  # Change this path based on your folder structure
 
 # Load the YOLO model
 # model = YOLO('yolov8n.pt')  # Load the YOLO model
 
+print("Model Class Names:", model.names)
+
+
 # Define authorized persons (class names from your dataset)
-authorized_persons = ['Person1', 'Person2']
+authorized_persons = ['person1', 'person2']
 
 # Detection threshold
-threshold = 0.0  # Confidence threshold for detections
+threshold = 0.7  # Confidence threshold for detections
 
 # Open the webcam (0 for default webcam)
 cap = cv2.VideoCapture(0)
@@ -45,7 +48,9 @@ while cap.isOpened():
         print("MONEEE BOXES???/")
         print(boxes)
         for box in boxes:
+            print(box.cls)
             class_id = int(box.cls)
+
             confidence = float(box.conf)
             x1, y1, x2, y2 = map(int, box.xyxy[0])
 
@@ -53,11 +58,12 @@ while cap.isOpened():
                 # Get the class name from the model
                 class_name = model.names[class_id]
 
-
                 print("EDA HASHIRE>>>>>>>>")
+                print(class_name);
 
                 # Check if the detected person is authorized
                 if class_name in authorized_persons:
+                    print("AUTHORIZED PERSON DETECTED")
                     label = f"{class_name} {confidence:.2f}"
                     color = (0, 255, 0)  # Green color for authorized persons
                 else:
@@ -66,6 +72,8 @@ while cap.isOpened():
 
                 # Draw bounding box and label
                 cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
+                # cv2.rectangle(frame, (50, 50), (200, 200),   (255, 0, 0), 2)
+
                 cv2.putText(frame, label, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
 
             else:

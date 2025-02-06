@@ -36,7 +36,7 @@ results = model.train(
     epochs=100,                  # Number of training epochs
     imgsz=640,                   # Image size
     batch=16,                    # Batch size
-    name='yolov8n_custom'        # Name of the training run
+    name='yolov8n_custom_dataset'        # Name of the training run
 )
 
 

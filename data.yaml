@@ -5,6 +5,7 @@ val: images/val      # Validation images path
 names:
    0: person1
    1: person2
+   2: unknown
 
 # train: C:\incident_detection\detect\datasets\train\images  
 # val: C:\incident_detection\detect\datasets\val\images  
