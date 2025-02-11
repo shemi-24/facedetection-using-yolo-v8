@@ -8,7 +8,7 @@ model = YOLO('C:\\incident_detection\\detect\\runs\\detect\\yolov8n_custom_datas
 authorized_persons = ['person1', 'person2']  # Update this list with your trained class names
 
 # Detection threshold
-threshold = 0.6  # Lowered to detect more objects
+threshold = 0.8  # Lowered to detect more objects
 
 # Open the webcam (0 for default webcam)
 cap = cv2.VideoCapture(0)
